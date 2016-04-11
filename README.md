@@ -9,7 +9,11 @@ Created for OmniKraft.net for the SMP server.
 - [ ] Finish Trader toJSON method.
 - [ ] Write fromJSON method.
 - [ ] See if making Entity Metadata persistent is possible.
-- [ ] Finish create() method [Trader.create]
-
-
+- [ ] Finish trader create method
+- [ ] Write RayTrace entity getter method
+- [ ] Write JSON Parser to get entity info
+- [ ] Stop display items from being picked up
+- [ ] Stop display items from despawning
+- [ ] Write inv checker to see if player has room to buy item.
+- [ ] Write entity despawner / respawner on server reboot
 
