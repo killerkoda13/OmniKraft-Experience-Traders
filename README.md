@@ -4,7 +4,7 @@ OmniKraft Exp traders for SMP
 Author: Killerkoda13
 Created for OmniKraft.net for the SMP server.
 
-commit:dbe0daaeb28af26ce70efb8a8129d54d4787de79
+[Absolute link test](https://github.com/killerkoda13/OmniKraft-Experience-Traders/commit/dbe0daaeb28af26ce70efb8a8129d54d4787de79)
 <h1>Tasks</h1>
 - [X] Make ItemStack to base64 converter
 - [ ] Finish Trader toJSON method.
