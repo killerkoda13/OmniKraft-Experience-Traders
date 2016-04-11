@@ -1,9 +1,18 @@
 package me.killerkoda13.OmniExperienceTrader;
 
-public class OmniExperienceTrader {
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class OmniExperienceTrader extends JavaPlugin{
 	
-	public static void main(String[] args)
+	@Override
+	public void onEnable()
 	{
-		System.out.println("Test2");
+		System.out.println("[TraderRedux] Kodaaaa");
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		
 	}
 }
