@@ -1,14 +1,21 @@
 package me.killerkoda13.OmniExperienceTrader.Utils;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 import me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.json.simple.JSONObject;
+
+import com.sun.deploy.uitoolkit.impl.fx.Utils;
 
 /***
  *		---------------------------------
@@ -30,7 +37,8 @@ public class Trader {
 	ItemStack hand;			//ItemStack object of item in players hand. Only used if item id is absent
 	World world;			//World the trader exists in
 	Location location;		//Location where the trader exists
-	
+	ArmorStand trader;
+	Item item;
 	/**
 	 * @param firstline first line of trader
 	 * @param secondline second line of trader
@@ -47,9 +55,11 @@ public class Trader {
 		this.line2 = secondline;
 		this.price = price;
 		this.amount = amount;
+		hand.setAmount(1);
 		this.hand = hand;
 		this.world = world;
 		this.location = location;
+		
 	}
 	
 	/**
@@ -68,6 +78,7 @@ public class Trader {
 		this.line2 = secondline;
 		this.price = price;
 		this.amount = amount;
+		hand.setAmount(1);
 		this.hand = hand;
 		this.gravity = gravity;
 		this.world = world;
@@ -83,16 +94,60 @@ public class Trader {
 
 		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
 		
-		hitbox.setMetadata("xptrader.line1", new FixedMetadataValue(plugin, line1));
-		hitbox.setMetadata("xptrader.line2", new FixedMetadataValue(plugin, line2));
+
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(plugin, price));
+		hitbox.setCustomName(line2);
+		hitbox.setCustomNameVisible(false);
 		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(plugin, amount));
-		hitbox.setMetadata("xptrader.gravity", new FixedMetadataValue(plugin, gravity));
 		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(plugin, hand));
 		hitbox.setVisible(false);
 		hitbox.setSmall(true);
 		hitbox.setBasePlate(false);
-
+		hitbox.setGravity(gravity);
+		
+		Item display = (Item) world.spawnEntity(location, EntityType.DROPPED_ITEM);
+		display.setCustomName(line1);
+		display.setCustomNameVisible(false);
+		hitbox.setPassenger(display);
+		item = display;
+		trader = hitbox;
 		return true;
 	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public String toJSON()
+	{
+
+		
+	      JSONObject obj = new JSONObject();
+	      if(hand !=null)
+	      {
+		      obj.put("hitbox.CustomName", line2);
+		      obj.put("hitbox.price", price);
+		      obj.put("hitbox.amount",amount);
+		      obj.put("hitbox.location.x", location.getBlock().getX());
+		      obj.put("hitbox.location.y", location.getBlock().getY());
+		      obj.put("hitbox.location.z", location.getBlock().getZ());
+		      obj.put("hitbox.location.world", world);
+		      obj.put("hitbox.gravity", gravity);
+		      obj.put("item.CustomName", line1);
+		      obj.put("item.base64", ItemUtils.itemTo64(hand));
+		  return obj.toJSONString();
+	      }
+	      return null;
+	}
+	
+	/**
+	 * Saves the trader to /plugins/ExpTraders/traders/
+	 * Saves as UUID'd JSON form
+	 */
+	public void save()
+	{
+		
+	}
+	
+	
+	
 }
