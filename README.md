@@ -17,5 +17,6 @@ Created for OmniKraft.net for the SMP server.
 - [ ] Write inv checker to see if player has room to buy item.
 - [ ] Write entity despawner / respawner on server reboot
 - [ ] Write UUID, JSON based file structure for traders
+- [ ] Write command structure
 - [ ] Take over the world wit lazzorsss
 
