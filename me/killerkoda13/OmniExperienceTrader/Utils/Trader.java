@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class Trader {	
 	
-	
 	String line1;			//First line of trader
 	String line2;			//Second line of trader
 	int price;				//Price of item in trader
