@@ -81,15 +81,18 @@ public class Trader {
 	public boolean createTrader()
 	{
 
-		
-		
 		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
+		
 		hitbox.setMetadata("xptrader.line1", new FixedMetadataValue(plugin, line1));
 		hitbox.setMetadata("xptrader.line2", new FixedMetadataValue(plugin, line2));
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(plugin, price));
-		hitbox.setMetadata("xptrader.data", new FixedMetadataValue(plugin, gravity));
-		hitbox.setMetadata("xptrader.data", new FixedMetadataValue(plugin, hand));
+		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(plugin, amount));
+		hitbox.setMetadata("xptrader.gravity", new FixedMetadataValue(plugin, gravity));
+		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(plugin, hand));
+		hitbox.setVisible(false);
+		hitbox.setSmall(true);
+		hitbox.setBasePlate(false);
 
-
+		return true;
 	}
 }
