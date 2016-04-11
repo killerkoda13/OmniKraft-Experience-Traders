@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
  *		---------------------------------
  */
 
+
 public class Trader {	
 	
 	
