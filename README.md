@@ -16,4 +16,6 @@ Created for OmniKraft.net for the SMP server.
 - [ ] Stop display items from despawning
 - [ ] Write inv checker to see if player has room to buy item.
 - [ ] Write entity despawner / respawner on server reboot
+- [ ] Write UUID, JSON based file structure for traders
+- [ ] Take over the world wit lazzorsss
 
