@@ -12,4 +12,7 @@ Created for OmniKraft.net for the SMP server.
 - [ ] Write fromJSON method.
 - [ ] See if making Entity Metadata persistent is possible.
 - [ ] Finish create() method [Trader.create]
+
+
+
 dbe0daaeb28af26ce70efb8a8129d54d4787de79
