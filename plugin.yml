@@ -1,0 +1,9 @@
+name: TraderRedux
+main: me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader
+version: 0.0.1
+description: Traders redone
+commands:
+   none:
+      description: Better Vanish
+      usage: /<command>
+

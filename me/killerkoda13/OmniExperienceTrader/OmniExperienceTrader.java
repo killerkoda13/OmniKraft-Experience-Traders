@@ -7,7 +7,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 	@Override
 	public void onEnable()
 	{
-		System.out.println("[TraderRedux] Kodaaaa");
+
 	}
 	
 	@Override
