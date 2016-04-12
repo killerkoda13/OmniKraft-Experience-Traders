@@ -139,7 +139,7 @@ public class Trader {
 		hitbox.setBasePlate(false);
 		hitbox.setGravity(gravity);
 
-		Item display = (Item) world.spawnEntity(location, EntityType.DROPPED_ITEM);
+		Item display = (Item) world.dropItem(location, hand);
 		display.setCustomName(line1);
 		display.setPickupDelay(Integer.MAX_VALUE);
 		display.setCustomNameVisible(true);
