@@ -94,7 +94,11 @@ public class Trader {
 		this.plugin = OmniExperienceTrader.getInstance();	
 
 	}
-
+	
+	public void setline1(String string)
+	{
+		this.line1 = string;
+	}
 
 	//WIP 4/12/2016 - 9:27 AM
 	public Trader(JSONObject traderJSON)
@@ -158,7 +162,7 @@ public class Trader {
 	public boolean save()
 	{
 		File pluginDirectory = plugin.getDataFolder();
-		File traderDirectory = new File(pluginDirectory+"\\traders\\");
+		File traderDirectory = new File(pluginDirectory+"/traders/");
 		String JSON = null;
 		boolean ret = true;
 		JSONObject obj = new JSONObject();
@@ -187,7 +191,7 @@ public class Trader {
 			traderDirectory.mkdirs();
 		}else
 		{
-			File traderDoc = new File(traderDirectory+uuid.toString()+".json");
+			File traderDoc = new File(traderDirectory+"/"+uuid.toString()+".json");
 			if(!traderDoc.exists())
 			{
 				try {
