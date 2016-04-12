@@ -95,20 +95,27 @@ public class Trader {
 
 
 	//WIP 4/12/2016 - 9:27 AM
-	public Trader(JSON traderJSON)
+	public Trader(JSONObject traderJSON)
 	{
-
-		this.line1 = firstline;
-		this.line2 = secondline;
-		this.price = price;
-		this.amount = amount;
-		hand.setAmount(1);
-		this.hand = hand;
-		this.gravity = gravity;
-		this.world = world;
+		
+		this.line2 = (String) traderJSON.get("hitbox.CustomName");
+		this.price = (int) traderJSON.get("hitbox.price");
+		this.amount = (int) traderJSON.get("hitbox.amount");
+		int x = (int) traderJSON.get("hitbox.location.x");
+		int y = (int) traderJSON.get("hitbox.location.y");
+		int z = (int) traderJSON.get("hitbox.location.z");
+		World world = (World) traderJSON.get("hitbox.location.world");
+		Location location = new Location(world,x,y,z);
 		this.location = location;
-		this.uuid = UUID.randomUUID();
-
+		this.gravity = (boolean) traderJSON.get("hitbox.gravity");
+		this.line1 = (String) traderJSON.get("item.CustomName");
+		try {
+			this.item = (Item) ItemUtils.itemFrom64((String) traderJSON.get("item.base64"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
@@ -125,7 +132,7 @@ public class Trader {
 		hitbox.setCustomNameVisible(false);
 		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(plugin, amount));
 		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(plugin, hand));
-		hitbox.setVisible(false);
+		hitbox.setVisible(true);
 		hitbox.setSmall(true);
 		hitbox.setBasePlate(false);
 		hitbox.setGravity(gravity);
@@ -133,7 +140,7 @@ public class Trader {
 		Item display = (Item) world.spawnEntity(location, EntityType.DROPPED_ITEM);
 		display.setCustomName(line1);
 		display.setPickupDelay(Integer.MAX_VALUE);
-		display.setCustomNameVisible(false);
+		display.setCustomNameVisible(true);
 		hitbox.setPassenger(display);
 		item = display;
 		trader = hitbox;
