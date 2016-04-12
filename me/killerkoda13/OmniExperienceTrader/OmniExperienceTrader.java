@@ -18,6 +18,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 	@Override
 	public void onEnable()
 	{
+		this.plugin = this;
 		if(!plugin.getDataFolder().exists())
 		{
 			plugin.getDataFolder().mkdirs();
