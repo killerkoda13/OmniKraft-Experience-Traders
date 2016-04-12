@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
@@ -111,7 +112,7 @@ public class Trader {
 		int y = (int) traderJSON.get("hitbox.location.y");
 		int z = (int) traderJSON.get("hitbox.location.z");
 		this.plugin = OmniExperienceTrader.getInstance();	
-		World world = (World) traderJSON.get("hitbox.location.world");
+		World world = (World) Bukkit.getWorld((String) traderJSON.get("hitbox.location.world"));
 		Location location = new Location(world,x,y,z);
 		this.location = location;
 		this.gravity = (boolean) traderJSON.get("hitbox.gravity");
@@ -175,7 +176,7 @@ public class Trader {
 			obj.put("hitbox.location.x", location.getBlock().getX());
 			obj.put("hitbox.location.y", location.getBlock().getY());
 			obj.put("hitbox.location.z", location.getBlock().getZ());
-			obj.put("hitbox.location.world", world);
+			obj.put("hitbox.location.world", world.getName());
 			obj.put("hitbox.gravity", gravity);
 			obj.put("item.CustomName", line1);
 			obj.put("item.base64", ItemUtils.itemTo64(hand));

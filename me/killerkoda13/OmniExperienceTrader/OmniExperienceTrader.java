@@ -41,10 +41,10 @@ public class OmniExperienceTrader extends JavaPlugin{
 
 		for(File file : traderDirectory.listFiles())
 		{		
-			JSONObject obj = new JSONObject();
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(file));
 					String read = reader.readLine();
+					reader.close();
 					JSONParser parser = new JSONParser();
 					JSONObject json = (JSONObject) parser.parse(read);
 					Trader trader = new Trader(json);
