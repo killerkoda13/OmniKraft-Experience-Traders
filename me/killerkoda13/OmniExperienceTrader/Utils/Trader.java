@@ -65,6 +65,7 @@ public class Trader {
 		this.location = location;
 		this.uuid = UUID.randomUUID();
 
+		
 	}
 
 	/**
@@ -131,6 +132,7 @@ public class Trader {
 
 		Item display = (Item) world.spawnEntity(location, EntityType.DROPPED_ITEM);
 		display.setCustomName(line1);
+		display.setPickupDelay(Integer.MAX_VALUE);
 		display.setCustomNameVisible(false);
 		hitbox.setPassenger(display);
 		item = display;
