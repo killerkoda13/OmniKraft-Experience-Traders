@@ -88,7 +88,8 @@ public class Trader {
 		this.hand = hand;
 		this.gravity = gravity;
 		this.world = world;
-		this.location = location;
+		Location locations = new Location(world,location.getBlockX()+0.5,location.getBlockY(),location.getBlockZ()+0.5);
+		this.location = locations;
 		this.uuid = UUID.randomUUID();
 		this.plugin = OmniExperienceTrader.getInstance();	
 
@@ -131,10 +132,10 @@ public class Trader {
 
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
 		hitbox.setCustomName(line2);
-		hitbox.setCustomNameVisible(false);
+		hitbox.setCustomNameVisible(true);
 		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(OmniExperienceTrader.getInstance(), amount));
 		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(OmniExperienceTrader.getInstance(), hand));
-		hitbox.setVisible(true);
+		hitbox.setVisible(false);
 		hitbox.setSmall(true);
 		hitbox.setBasePlate(false);
 		hitbox.setGravity(gravity);
