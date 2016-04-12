@@ -131,7 +131,7 @@ public class Trader {
 		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
 
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
-		hitbox.setCustomName(line2);
+		hitbox.setCustomName(line1);
 		hitbox.setCustomNameVisible(true);
 		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(OmniExperienceTrader.getInstance(), amount));
 		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(OmniExperienceTrader.getInstance(), hand));
@@ -141,7 +141,7 @@ public class Trader {
 		hitbox.setGravity(gravity);
 
 		Item display = (Item) world.dropItem(location, hand);
-		display.setCustomName(line1);
+		display.setCustomName(line2);
 		display.setPickupDelay(Integer.MAX_VALUE);
 		display.setCustomNameVisible(true);
 		hitbox.setPassenger(display);

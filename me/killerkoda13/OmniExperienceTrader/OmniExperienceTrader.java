@@ -1,5 +1,7 @@
 package me.killerkoda13.OmniExperienceTrader;
 
+import java.io.File;
+
 import me.killerkoda13.OmniExperienceTrader.Utils.Trader;
 
 import org.bukkit.command.Command;
@@ -16,7 +18,17 @@ public class OmniExperienceTrader extends JavaPlugin{
 	@Override
 	public void onEnable()
 	{
-		this.plugin = this;
+		if(!plugin.getDataFolder().exists())
+		{
+			plugin.getDataFolder().mkdirs();
+		}
+		
+		File traderDirectory = new File(plugin.getDataFolder()+"\\traders\\");
+
+		if(!traderDirectory.exists())
+		{
+			traderDirectory.mkdirs();
+		}
 	}
 	
 	@Override
