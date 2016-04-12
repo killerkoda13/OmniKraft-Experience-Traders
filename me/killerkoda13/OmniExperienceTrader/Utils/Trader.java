@@ -92,6 +92,24 @@ public class Trader {
 
 	}
 
+
+	//WIP 4/12/2016 - 9:27 AM
+	public Trader(JSON traderJSON)
+	{
+
+		this.line1 = firstline;
+		this.line2 = secondline;
+		this.price = price;
+		this.amount = amount;
+		hand.setAmount(1);
+		this.hand = hand;
+		this.gravity = gravity;
+		this.world = world;
+		this.location = location;
+		this.uuid = UUID.randomUUID();
+
+	}
+	
 	/**
 	 * Creates trader
 	 * @return true if trader was created successfully. returns false if trader was not created successfully.
@@ -100,7 +118,6 @@ public class Trader {
 	{
 
 		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
-
 
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(plugin, price));
 		hitbox.setCustomName(line2);
@@ -119,31 +136,6 @@ public class Trader {
 		item = display;
 		trader = hitbox;
 		return true;
-	}
-
-
-
-	@SuppressWarnings("unchecked")
-	public String toJSON()
-	{
-
-
-		JSONObject obj = new JSONObject();
-		if(hand !=null)
-		{
-			obj.put("hitbox.CustomName", line2);
-			obj.put("hitbox.price", price);
-			obj.put("hitbox.amount",amount);
-			obj.put("hitbox.location.x", location.getBlock().getX());
-			obj.put("hitbox.location.y", location.getBlock().getY());
-			obj.put("hitbox.location.z", location.getBlock().getZ());
-			obj.put("hitbox.location.world", world);
-			obj.put("hitbox.gravity", gravity);
-			obj.put("item.CustomName", line1);
-			obj.put("item.base64", ItemUtils.itemTo64(hand));
-			return obj.toJSONString();
-		}
-		return null;
 	}
 
 	/**
@@ -208,7 +200,4 @@ public class Trader {
 		}
 		return ret;
 	}
-
-
-
 }
