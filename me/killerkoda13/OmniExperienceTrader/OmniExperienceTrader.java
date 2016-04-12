@@ -16,7 +16,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 	@Override
 	public void onEnable()
 	{
-		this.plugin = plugin;
+		this.plugin = this;
 	}
 	
 	@Override
