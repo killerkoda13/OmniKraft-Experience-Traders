@@ -30,7 +30,7 @@ import com.sun.deploy.uitoolkit.impl.fx.Utils;
 public class Trader {	
 
 
-	Plugin plugin = OmniExperienceTrader.getInstance();			//Instance of plugin
+	Plugin plugin;		//Instance of plugin
 
 	String line1;			//First line of trader
 	String line2;			//Second line of trader
@@ -64,7 +64,7 @@ public class Trader {
 		this.world = world;
 		this.location = location;
 		this.uuid = UUID.randomUUID();
-
+		this.plugin = OmniExperienceTrader.getInstance();	
 		
 	}
 
@@ -90,6 +90,7 @@ public class Trader {
 		this.world = world;
 		this.location = location;
 		this.uuid = UUID.randomUUID();
+		this.plugin = OmniExperienceTrader.getInstance();	
 
 	}
 
@@ -104,6 +105,7 @@ public class Trader {
 		int x = (int) traderJSON.get("hitbox.location.x");
 		int y = (int) traderJSON.get("hitbox.location.y");
 		int z = (int) traderJSON.get("hitbox.location.z");
+		this.plugin = OmniExperienceTrader.getInstance();	
 		World world = (World) traderJSON.get("hitbox.location.world");
 		Location location = new Location(world,x,y,z);
 		this.location = location;
