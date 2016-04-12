@@ -129,11 +129,11 @@ public class Trader {
 
 		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
 
-		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(plugin, price));
+		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
 		hitbox.setCustomName(line2);
 		hitbox.setCustomNameVisible(false);
-		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(plugin, amount));
-		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(plugin, hand));
+		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(OmniExperienceTrader.getInstance(), amount));
+		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(OmniExperienceTrader.getInstance(), hand));
 		hitbox.setVisible(true);
 		hitbox.setSmall(true);
 		hitbox.setBasePlate(false);
