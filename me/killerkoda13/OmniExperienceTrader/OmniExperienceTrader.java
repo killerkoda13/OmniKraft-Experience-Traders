@@ -64,38 +64,19 @@ public class OmniExperienceTrader extends JavaPlugin{
 				}
 
 		}
-		
-		for(File file : traderDirectory.listFiles())
-		{		
-				try {
-					BufferedReader reader = new BufferedReader(new FileReader(file));
-					String read = reader.readLine();
-					reader.close();
-					JSONParser parser = new JSONParser();
-					JSONObject json = (JSONObject) parser.parse(read);
-					Trader trader = new Trader(json);
-					trader.removeTrader();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+		System.out.println("ONENABLE");
+		for(Trader trader : traders)
+		{
+			System.out.println(trader);
 		}
 	}
 	
 	@Override
 	public void onDisable()
-	{
-		File traderDirectory = new File(plugin.getDataFolder()+"/traders/");
-
+	{		
 		for(Trader trader : traders)
 		{
+			System.out.println("REMOVING!!!!");
 			trader.removeTrader();
 		}
 		

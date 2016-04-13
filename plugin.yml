@@ -3,6 +3,7 @@ main: me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader
 version: 0.0.1
 description: Traders redone
 load: POSTWORLD
+# depend: [Multiverse-Core]
 commands:
    xptrader:
       description: xptrader base command

@@ -3,8 +3,6 @@ package me.killerkoda13.OmniExperienceTrader.Utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader;
@@ -12,7 +10,6 @@ import me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -46,6 +43,7 @@ public class Trader {
 	Item item;
 	UUID uuid;
 	UUID baseUID;
+	UUID itemUID;
 	/**
 	 * @param firstline first line of trader
 	 * @param secondline second line of trader
@@ -115,8 +113,7 @@ public class Trader {
 		this.plugin = OmniExperienceTrader.getInstance();	
 		World world = (World) Bukkit.getWorld((String) traderJSON.get("hitbox.location.world"));
 		this.world = world;
-		Location location = new Location(world,x+0.5,y,z+0.5);
-		this.location = location;
+		this.location = new Location(world,x+0.5,y,z+0.5);;
 		this.gravity = (boolean) traderJSON.get("hitbox.gravity");
 		this.line1 = (String) traderJSON.get("item.CustomName");
 		ItemStack stack = null;
@@ -127,17 +124,25 @@ public class Trader {
 			e.printStackTrace();
 		}
 		this.hand = stack;
+	//	location.getChunk().load();
+
 	}
 	
 
 	
 	public void removeTrader()
-	{
+	{			
+		location.getChunk().load();
+
 		for(Entity e : location.getChunk().getEntities())
 		{
 			if(e.getUniqueId().equals(this.baseUID))
 			{
-				e.getPassenger().remove();
+				e.remove();
+			}
+			
+			if(e.getUniqueId().equals(this.itemUID))
+			{
 				e.remove();
 			}
 		}
@@ -149,8 +154,9 @@ public class Trader {
 	 */
 	public boolean createTrader()
 	{
-		
-		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
+		try
+		{
+		ArmorStand hitbox = (ArmorStand) this.world.spawnEntity(this.location, EntityType.ARMOR_STAND);
 
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
 		hitbox.setCustomName(line1);
@@ -170,6 +176,11 @@ public class Trader {
 		this.item = display;
 		this.trader = hitbox;
 		this.baseUID = hitbox.getUniqueId();
+		this.itemUID = display.getUniqueId();
+		}catch(Exception e)
+		{
+			
+		}
 		return true;
 	}
 
