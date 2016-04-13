@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import me.killerkoda13.OmniExperienceTrader.Utils.Trader;
 
@@ -21,6 +22,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 	
 	
 	static Plugin plugin;
+	ArrayList<Trader> traders = new ArrayList<Trader>();
 	
 	@Override
 	public void onEnable()
@@ -48,8 +50,31 @@ public class OmniExperienceTrader extends JavaPlugin{
 					JSONParser parser = new JSONParser();
 					JSONObject json = (JSONObject) parser.parse(read);
 					Trader trader = new Trader(json);
-					trader.setline1("TEST LINE 2");
 					trader.createTrader();
+					traders.add(trader);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+		}
+		
+		for(File file : traderDirectory.listFiles())
+		{		
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(file));
+					String read = reader.readLine();
+					reader.close();
+					JSONParser parser = new JSONParser();
+					JSONObject json = (JSONObject) parser.parse(read);
+					Trader trader = new Trader(json);
+					trader.removeTrader();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -69,10 +94,12 @@ public class OmniExperienceTrader extends JavaPlugin{
 	{
 		File traderDirectory = new File(plugin.getDataFolder()+"/traders/");
 
-		for(File file : traderDirectory.listFiles())
+		for(Trader trader : traders)
 		{
-			System.out.println(file);
+			trader.removeTrader();
 		}
+		
+		
 	}
 	
 	public static Plugin getInstance()

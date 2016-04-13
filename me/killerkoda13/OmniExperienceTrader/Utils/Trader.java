@@ -3,7 +3,8 @@ package me.killerkoda13.OmniExperienceTrader.Utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader;
@@ -11,15 +12,15 @@ import me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
-
-import com.sun.deploy.uitoolkit.impl.fx.Utils;
 
 /***
  *		---------------------------------
@@ -44,6 +45,7 @@ public class Trader {
 	ArmorStand trader;
 	Item item;
 	UUID uuid;
+	UUID baseUID;
 	/**
 	 * @param firstline first line of trader
 	 * @param secondline second line of trader
@@ -98,32 +100,47 @@ public class Trader {
 	
 	public void setline1(String string)
 	{
-		this.line1 = string;
+		this.line2 = string;
 	}
 
 	//WIP 4/12/2016 - 9:27 AM
 	public Trader(JSONObject traderJSON)
 	{
-		
 		this.line2 = (String) traderJSON.get("hitbox.CustomName");
-		this.price = (int) traderJSON.get("hitbox.price");
-		this.amount = (int) traderJSON.get("hitbox.amount");
-		int x = (int) traderJSON.get("hitbox.location.x");
-		int y = (int) traderJSON.get("hitbox.location.y");
-		int z = (int) traderJSON.get("hitbox.location.z");
+		this.price = Math.toIntExact((long) traderJSON.get("hitbox.price"));
+		this.amount = Math.toIntExact((long) traderJSON.get("hitbox.amount"));
+		int x = Math.toIntExact((long) traderJSON.get("hitbox.location.x"));
+		int y = Math.toIntExact((long) traderJSON.get("hitbox.location.y"));
+		int z = Math.toIntExact((long) traderJSON.get("hitbox.location.z"));
 		this.plugin = OmniExperienceTrader.getInstance();	
 		World world = (World) Bukkit.getWorld((String) traderJSON.get("hitbox.location.world"));
-		Location location = new Location(world,x,y,z);
+		this.world = world;
+		Location location = new Location(world,x+0.5,y,z+0.5);
 		this.location = location;
 		this.gravity = (boolean) traderJSON.get("hitbox.gravity");
 		this.line1 = (String) traderJSON.get("item.CustomName");
+		ItemStack stack = null;
 		try {
-			this.item = (Item) ItemUtils.itemFrom64((String) traderJSON.get("item.base64"));
+			stack = ItemUtils.itemFrom64((String) traderJSON.get("item.base64"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		this.hand = stack;
+	}
+	
+
+	
+	public void removeTrader()
+	{
+		for(Entity e : location.getChunk().getEntities())
+		{
+			if(e.getUniqueId().equals(this.baseUID))
+			{
+				e.getPassenger().remove();
+				e.remove();
+			}
+		}
 	}
 	
 	/**
@@ -132,7 +149,7 @@ public class Trader {
 	 */
 	public boolean createTrader()
 	{
-
+		
 		ArmorStand hitbox = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
 
 		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
@@ -150,8 +167,9 @@ public class Trader {
 		display.setPickupDelay(Integer.MAX_VALUE);
 		display.setCustomNameVisible(true);
 		hitbox.setPassenger(display);
-		item = display;
-		trader = hitbox;
+		this.item = display;
+		this.trader = hitbox;
+		this.baseUID = hitbox.getUniqueId();
 		return true;
 	}
 
