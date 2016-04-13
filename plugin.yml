@@ -2,8 +2,9 @@ name: TraderRedux
 main: me.killerkoda13.OmniExperienceTrader.OmniExperienceTrader
 version: 0.0.1
 description: Traders redone
+load: POSTWORLD
 commands:
    xptrader:
-      description: Better Vanish
+      description: xptrader base command
       usage: /<command>
 
