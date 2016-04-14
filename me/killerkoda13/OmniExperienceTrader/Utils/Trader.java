@@ -149,7 +149,6 @@ public class Trader {
 	}
 	
 	
-	
 	/**
 	 * Creates trader
 	 * @return true if trader was created successfully. returns false if trader was not created successfully.

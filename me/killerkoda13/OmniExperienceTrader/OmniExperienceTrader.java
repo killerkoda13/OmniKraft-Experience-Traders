@@ -64,7 +64,6 @@ public class OmniExperienceTrader extends JavaPlugin{
 				}
 
 		}
-		System.out.println("ONENABLE");
 		for(Trader trader : traders)
 		{
 			System.out.println(trader);
@@ -76,7 +75,6 @@ public class OmniExperienceTrader extends JavaPlugin{
 	{		
 		for(Trader trader : traders)
 		{
-			System.out.println("REMOVING!!!!");
 			trader.removeTrader();
 		}
 		
@@ -94,7 +92,13 @@ public class OmniExperienceTrader extends JavaPlugin{
 		
 		Player p = (Player) sender;
 		
-		if(cmd.getName().equalsIgnoreCase("xptrader"))
+		if(cmd.getName().equalsIgnoreCase("xptrader") || cmd.getName().equalsIgnoreCase("xpt"))
+		{
+			for(String argument : args)
+			{
+				p.sendMessage(argument+" "+args.length);
+			}
+		}
 		{
 			Trader trader = new Trader("first", "second", 1, 1, p.getItemInHand(), true, p.getWorld(), p.getLocation());
 			trader.createTrader();
