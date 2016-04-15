@@ -98,6 +98,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 			{
 				if(args.length == 6)
 				{
+					
 					try
 					{
 					String first = args[1].replaceAll("_", " ");
