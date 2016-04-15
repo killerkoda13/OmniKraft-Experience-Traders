@@ -94,9 +94,36 @@ public class OmniExperienceTrader extends JavaPlugin{
 		
 		if(cmd.getName().equalsIgnoreCase("xptrader") || cmd.getName().equalsIgnoreCase("xpt"))
 		{
-			for(String argument : args)
+			if(args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("make"))
 			{
-				p.sendMessage(argument+" "+args.length);
+				if(args.length == 6)
+				{
+					try
+					{
+					String first = args[1].replaceAll("_", " ");
+					String second = args[2].replaceAll("_", " ");
+					int cost = Integer.parseInt(args[3]);
+					int amount = Integer.parseInt(args[4]);
+					boolean grav = false;
+					if(args[5].equalsIgnoreCase("t") || args[5].equalsIgnoreCase("true"))
+					{
+						grav = true;
+					}else if(args[5].equalsIgnoreCase("f") || args[5].equalsIgnoreCase("false"))
+					{
+						grav = false;
+					}
+					Trader trader = new Trader(first,second,cost,amount,p.getItemInHand(),grav,p.getWorld(),p.getLocation());
+					}catch(Exception e)
+					{
+						System.out.println(e);
+					}
+				}else
+				{
+					
+				}
+			}else 
+			{
+				
 			}
 		}
 		{
