@@ -109,6 +109,7 @@ public class OmniExperienceTrader extends JavaPlugin implements Listener{
 	@EventHandler
 	public void InteractAtEntity(PlayerInteractAtEntityEvent e)
 	{
+		
 		if(e.getRightClicked().getType().equals(EntityType.ARMOR_STAND))
 		{
 			if(e.getRightClicked().hasMetadata("xptrader.UUID"))

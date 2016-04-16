@@ -122,6 +122,7 @@ public class Trader {
 		this.gravity = (boolean) traderJSON.get("hitbox.gravity");
 		this.line1 = (String) traderJSON.get("item.CustomName");
 		ItemStack stack = null;
+		this.uuid = UUID.fromString((String) traderJSON.get("uuid"));
 		try {
 			stack = ItemUtils.itemFrom64((String) traderJSON.get("item.base64"));
 		} catch (IOException e) {
@@ -251,6 +252,7 @@ public class Trader {
 			obj.put("hitbox.gravity", gravity);
 			obj.put("item.CustomName", line1);
 			obj.put("item.base64", ItemUtils.itemTo64(hand));
+			obj.put("uuid", uuid.toString());
 			JSON = obj.toJSONString();
 		}else
 		{
