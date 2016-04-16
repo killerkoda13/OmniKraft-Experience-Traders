@@ -8,4 +8,6 @@ commands:
    xptrader:
       description: xptrader base command
       usage: /<command>
-
+   xpt:
+      description: xptrader base command
+      usage: /<command>
