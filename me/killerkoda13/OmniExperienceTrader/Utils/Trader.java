@@ -213,6 +213,7 @@ public class Trader {
 			display.setCustomName(line2);
 			display.setPickupDelay(Integer.MAX_VALUE);
 			display.setCustomNameVisible(true);
+			display.setMetadata("xptrader.display", new FixedMetadataValue(OmniExperienceTrader.getInstance(), "5"));
 			hitbox.setPassenger(display);
 			this.item = display;
 			this.trader = hitbox;

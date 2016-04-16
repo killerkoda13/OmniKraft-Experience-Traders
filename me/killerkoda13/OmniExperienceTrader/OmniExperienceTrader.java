@@ -18,6 +18,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -96,6 +97,15 @@ public class OmniExperienceTrader extends JavaPlugin implements Listener{
 		return plugin;
 	}
 
+	@EventHandler 
+	public void despawn(ItemDespawnEvent e)
+	{
+		if(e.getEntity().hasMetadata("xptrader.display"))
+		{
+			e.setCancelled(true);
+		}
+	}
+	
 	@EventHandler
 	public void InteractAtEntity(PlayerInteractAtEntityEvent e)
 	{
@@ -130,12 +140,13 @@ public class OmniExperienceTrader extends JavaPlugin implements Listener{
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
-								item.setAmount(e.getPlayer().getMetadata("xptrader.amount").get(0).asInt());
+								item.setAmount(e.getRightClicked().getMetadata("xptrader.amount").get(0).asInt());
 								e.getPlayer().getInventory().addItem(item);
-								e.getPlayer().sendMessage(ChatColor.GREEN+"Item successfully purchased for "+e.getRightClicked().getMetadata("xptrader.price").get(0).asInt()+" XP");
-								
+								e.getPlayer().sendMessage(ChatColor.GREEN+"Item successfully purchased for "+e.getRightClicked().getMetadata("xptrader.price").get(0).asInt()+" XP");	
+							}else
+							{
+								e.getPlayer().sendMessage(ChatColor.RED+"Not enough inventory space!");
 							}
-
 						}else
 						{
 							e.getPlayer().sendMessage(ChatColor.RED+"Not enough EXP!");
@@ -153,7 +164,7 @@ public class OmniExperienceTrader extends JavaPlugin implements Listener{
 	{
 
 		Player p = (Player) sender;
-
+		
 		if(cmd.getName().equalsIgnoreCase("xptrader") || cmd.getName().equalsIgnoreCase("xpt"))
 		{
 			if(args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("make"))
