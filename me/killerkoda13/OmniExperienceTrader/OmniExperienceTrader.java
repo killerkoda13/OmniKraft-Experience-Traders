@@ -13,14 +13,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class OmniExperienceTrader extends JavaPlugin{
+public class OmniExperienceTrader extends JavaPlugin implements Listener{
 
 	ArrayList<Player> remover = new ArrayList<Player>();
 	static Plugin plugin;
@@ -29,6 +33,8 @@ public class OmniExperienceTrader extends JavaPlugin{
 	@Override
 	public void onEnable()
 	{
+		getServer().getPluginManager().registerEvents(this,this);
+
 		this.plugin = this;
 		if(!plugin.getDataFolder().exists())
 		{
@@ -88,6 +94,38 @@ public class OmniExperienceTrader extends JavaPlugin{
 		return plugin;
 	}
 
+	@EventHandler
+	public void InteractAtEntity(PlayerInteractAtEntityEvent e)
+	{
+		if(e.getRightClicked().getType().equals(EntityType.ARMOR_STAND))
+		{
+			if(e.getRightClicked().hasMetadata("xptrader.UUID"))
+			{
+				if(remover.contains(e.getPlayer()))
+				{
+					String UUID = e.getRightClicked().getMetadata("xptrader.UUID").get(0).asString();
+					try {
+						Trader trader = Trader.getTrader(UUID);
+						trader.removeTrader();
+						e.getPlayer().sendMessage(ChatColor.GREEN+"Removed trader with UUID: "+UUID);
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}else
+				{
+					if(e.getRightClicked().hasMetadata("xptrader.price"))
+					{
+						if(e.getPlayer().getLevel() == e.getRightClicked().getMetadata("xptrader.price").get(0).asInt())
+						{
+							
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
@@ -102,54 +140,62 @@ public class OmniExperienceTrader extends JavaPlugin{
 				{
 					p.sendMessage(ChatColor.RED+"Can not make trader that sells AIR");
 				}else
-				if(args.length == 6)
-				{					
-					try
-					{
-						String first = args[1].replaceAll("_", " ");
-						String second = args[2].replaceAll("_", " ");
-						int cost = Integer.parseInt(args[3]);
-						int amount = Integer.parseInt(args[4]);
-						boolean grav = false;
-						if(args[5].equalsIgnoreCase("t") || args[5].equalsIgnoreCase("true"))
+					if(args.length == 6)
+					{					
+						try
 						{
-							grav = true;
-						}else if(args[5].equalsIgnoreCase("f") || args[5].equalsIgnoreCase("false"))
+							String first = args[1].replaceAll("_", " ");
+							String second = args[2].replaceAll("_", " ");
+							int cost = Integer.parseInt(args[3]);
+							int amount = Integer.parseInt(args[4]);
+							boolean grav = false;
+							if(args[5].equalsIgnoreCase("t") || args[5].equalsIgnoreCase("true"))
+							{
+								grav = true;
+							}else if(args[5].equalsIgnoreCase("f") || args[5].equalsIgnoreCase("false"))
+							{
+								grav = false;
+							}
+							Trader trader = new Trader(first,second,cost,amount,p.getItemInHand(),grav,p.getWorld(),p.getLocation());
+							trader.createTrader();
+							trader.save();
+						}catch(Exception e)
 						{
-							grav = false;
+							System.out.println(e);
 						}
-						Trader trader = new Trader(first,second,cost,amount,p.getItemInHand(),grav,p.getWorld(),p.getLocation());
-						trader.createTrader();
-						trader.save();
-					}catch(Exception e)
+					}else if(args.length == 5)
 					{
-						System.out.println(e);
+						try
+						{
+							String first = args[1].replaceAll("_", " ");
+							String second = args[2].replaceAll("_", " ");
+							int cost = Integer.parseInt(args[3]);
+							int amount = Integer.parseInt(args[4]);
+							Trader trader = new Trader(first,second,cost,amount,p.getItemInHand(),p.getWorld(),p.getLocation());
+							trader.createTrader();
+							trader.save();
+						}catch(Exception e)
+						{
+							System.out.println(e);
+						}
+					}else
+					{
+						p.sendMessage(ChatColor.RED+"Please enter all arguments!");
+						p.sendMessage(ChatColor.RED+"/xptrader create <firstline> <secondline> <xpcost> <amount> <gravity>");
+						p.sendMessage(ChatColor.RED+"NOTE: <gavity> is optional!");
+						p.sendMessage(ChatColor.RED+"EXAMPLE command: /xptrader create 20_Sponge 10_Levels 10 20 false");
 					}
-				}else if(args.length == 5)
-				{
-					try
-					{
-						String first = args[1].replaceAll("_", " ");
-						String second = args[2].replaceAll("_", " ");
-						int cost = Integer.parseInt(args[3]);
-						int amount = Integer.parseInt(args[4]);
-						Trader trader = new Trader(first,second,cost,amount,p.getItemInHand(),p.getWorld(),p.getLocation());
-						trader.createTrader();
-						trader.save();
-					}catch(Exception e)
-					{
-						System.out.println(e);
-					}
-				}else
-				{
-					p.sendMessage(ChatColor.RED+"Please enter all arguments!");
-					p.sendMessage(ChatColor.RED+"/xptrader create <firstline> <secondline> <xpcost> <amount> <gravity>");
-					p.sendMessage(ChatColor.RED+"NOTE: <gavity> is optional!");
-					p.sendMessage(ChatColor.RED+"EXAMPLE command: /xptrader create 20_Sponge 10_Levels 10 20 false");
-				}
 			}else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r") || args[0].equalsIgnoreCase("destroy"))
 			{
-
+				if(remover.contains(p))
+				{
+					remover.remove(p);
+					p.sendMessage(ChatColor.GREEN+"Remover tool no longer active.");
+				}else
+				{
+					remover.add(p);
+					p.sendMessage(ChatColor.GREEN+"Remover tool now active. Right click on the trader you wish to remove.");
+				}
 			}
 		}
 		{

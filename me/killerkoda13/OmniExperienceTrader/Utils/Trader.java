@@ -1,6 +1,9 @@
 package me.killerkoda13.OmniExperienceTrader.Utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
@@ -18,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /***
  *		---------------------------------
@@ -66,7 +71,7 @@ public class Trader {
 		this.location = location;
 		this.uuid = UUID.randomUUID();
 		this.plugin = OmniExperienceTrader.getInstance();	
-		
+
 	}
 
 	/**
@@ -95,7 +100,7 @@ public class Trader {
 		this.plugin = OmniExperienceTrader.getInstance();	
 
 	}
-	
+
 	public void setline1(String string)
 	{
 		this.line2 = string;
@@ -124,12 +129,47 @@ public class Trader {
 			e.printStackTrace();
 		}
 		this.hand = stack;
-	//	location.getChunk().load();
+		//	location.getChunk().load();
 
 	}
-	
 
-	
+	public static Trader getTrader(String uuid) throws FileNotFoundException
+	{
+		File pluginDirectory = OmniExperienceTrader.getInstance().getDataFolder();
+		File traderDirectory = new File(pluginDirectory+"/traders/");
+		Trader trader = null;
+		boolean contains = false;
+		File traderFile = null;
+		for(File f : traderDirectory.listFiles())
+		{
+			if(	f.getName().equals(uuid+".json"))
+			{
+				contains = true;
+				traderFile = f;
+			}		
+		}
+		
+		BufferedReader reader = new BufferedReader(new FileReader(traderFile));
+		try {
+			String contents = reader.readLine();
+			reader.close();
+			JSONParser parser = new JSONParser();
+			JSONObject json = (JSONObject) parser.parse(contents);
+			trader = new Trader(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return trader;
+
+	}
+
+
+
 	public void removeTrader()
 	{			
 		location.getChunk().load();
@@ -140,15 +180,15 @@ public class Trader {
 			{
 				e.remove();
 			}
-			
+
 			if(e.getUniqueId().equals(this.itemUID))
 			{
 				e.remove();
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Creates trader
 	 * @return true if trader was created successfully. returns false if trader was not created successfully.
@@ -157,30 +197,30 @@ public class Trader {
 	{
 		try
 		{
-		ArmorStand hitbox = (ArmorStand) this.world.spawnEntity(this.location, EntityType.ARMOR_STAND);
+			ArmorStand hitbox = (ArmorStand) this.world.spawnEntity(this.location, EntityType.ARMOR_STAND);
+			hitbox.setMetadata("xptrader.UUID", new FixedMetadataValue(OmniExperienceTrader.getInstance(), uuid.toString()));
+			hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
+			hitbox.setCustomName(line1);
+			hitbox.setCustomNameVisible(true);
+			hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(OmniExperienceTrader.getInstance(), amount));
+			hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(OmniExperienceTrader.getInstance(), hand));
+			hitbox.setVisible(false);
+			hitbox.setSmall(true);
+			hitbox.setBasePlate(false);
+			hitbox.setGravity(gravity);
 
-		hitbox.setMetadata("xptrader.price", new FixedMetadataValue(OmniExperienceTrader.getInstance(), price));
-		hitbox.setCustomName(line1);
-		hitbox.setCustomNameVisible(true);
-		hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(OmniExperienceTrader.getInstance(), amount));
-		hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(OmniExperienceTrader.getInstance(), hand));
-		hitbox.setVisible(false);
-		hitbox.setSmall(true);
-		hitbox.setBasePlate(false);
-		hitbox.setGravity(gravity);
-
-		Item display = (Item) world.dropItem(location, hand);
-		display.setCustomName(line2);
-		display.setPickupDelay(Integer.MAX_VALUE);
-		display.setCustomNameVisible(true);
-		hitbox.setPassenger(display);
-		this.item = display;
-		this.trader = hitbox;
-		this.baseUID = hitbox.getUniqueId();
-		this.itemUID = display.getUniqueId();
+			Item display = (Item) world.dropItem(location, hand);
+			display.setCustomName(line2);
+			display.setPickupDelay(Integer.MAX_VALUE);
+			display.setCustomNameVisible(true);
+			hitbox.setPassenger(display);
+			this.item = display;
+			this.trader = hitbox;
+			this.baseUID = hitbox.getUniqueId();
+			this.itemUID = display.getUniqueId();
 		}catch(Exception e)
 		{
-			
+
 		}
 		return true;
 	}
@@ -215,7 +255,7 @@ public class Trader {
 		{
 			ret = false;
 		}
-		
+
 		//Check if tradering directoy exists if not make one.
 		if(!traderDirectory.exists())
 		{
@@ -229,9 +269,9 @@ public class Trader {
 					FileWriter writer = new FileWriter(traderDoc);
 					if(JSON !=null)
 					{
-					writer.write(JSON);
-					writer.flush();
-					writer.close();
+						writer.write(JSON);
+						writer.flush();
+						writer.close();
 					}else
 					{
 						ret = false;
