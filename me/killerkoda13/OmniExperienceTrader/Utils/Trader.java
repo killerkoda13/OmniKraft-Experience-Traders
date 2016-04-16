@@ -203,7 +203,7 @@ public class Trader {
 			hitbox.setCustomName(line1);
 			hitbox.setCustomNameVisible(true);
 			hitbox.setMetadata("xptrader.amount", new FixedMetadataValue(OmniExperienceTrader.getInstance(), amount));
-			hitbox.setMetadata("xptrader.hand", new FixedMetadataValue(OmniExperienceTrader.getInstance(), hand));
+			hitbox.setMetadata("xptrader.base64", new FixedMetadataValue(OmniExperienceTrader.getInstance(), ItemUtils.itemTo64(hand)));
 			hitbox.setVisible(false);
 			hitbox.setSmall(true);
 			hitbox.setBasePlate(false);

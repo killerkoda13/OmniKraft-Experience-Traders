@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import me.killerkoda13.OmniExperienceTrader.Utils.ItemUtils;
 import me.killerkoda13.OmniExperienceTrader.Utils.Trader;
 
 import org.bukkit.ChatColor;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
@@ -116,9 +118,29 @@ public class OmniExperienceTrader extends JavaPlugin implements Listener{
 				{
 					if(e.getRightClicked().hasMetadata("xptrader.price"))
 					{
-						if(e.getPlayer().getLevel() == e.getRightClicked().getMetadata("xptrader.price").get(0).asInt())
+						if(e.getPlayer().getLevel() >= e.getRightClicked().getMetadata("xptrader.price").get(0).asInt())
 						{
-							
+							if(ItemUtils.getEmptySlots(e.getPlayer().getInventory()) < 36)
+							{
+								e.getPlayer().setLevel(e.getPlayer().getLevel()-e.getRightClicked().getMetadata("xptrader.price").get(0).asInt());
+								ItemStack item = null;
+								try {
+									item = ItemUtils.itemFrom64(e.getRightClicked().getMetadata("xptrader.base64").get(0).asString());
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+								item.setAmount(e.getPlayer().getMetadata("xptrader.amount").get(0).asInt());
+								e.getPlayer().getInventory().addItem(item);
+								e.getPlayer().sendMessage(ChatColor.GREEN+"Item successfully purchased for "+e.getRightClicked().getMetadata("xptrader.price").get(0).asInt()+" XP");
+								
+							}
+
+						}else
+						{
+							e.getPlayer().sendMessage(ChatColor.RED+"Not enough EXP!");
+							int required = e.getRightClicked().getMetadata("xptrader.price").get(0).asInt() - e.getPlayer().getLevel();
+							e.getPlayer().sendMessage(ChatColor.RED+"An additional: "+ required+" level(s) is required.");
 						}
 					}
 				}
