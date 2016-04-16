@@ -22,7 +22,7 @@ import org.json.simple.parser.ParseException;
 
 public class OmniExperienceTrader extends JavaPlugin{
 
-
+	ArrayList<Player> remover = new ArrayList<Player>();
 	static Plugin plugin;
 	ArrayList<Trader> traders = new ArrayList<Trader>();
 
@@ -101,7 +101,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 				if(p.getItemInHand().getType().equals(Material.AIR))
 				{
 					p.sendMessage(ChatColor.RED+"Can not make trader that sells AIR");
-				}
+				}else
 				if(args.length == 6)
 				{					
 					try
@@ -142,9 +142,12 @@ public class OmniExperienceTrader extends JavaPlugin{
 					}
 				}else
 				{
-
+					p.sendMessage(ChatColor.RED+"Please enter all arguments!");
+					p.sendMessage(ChatColor.RED+"/xptrader create <firstline> <secondline> <xpcost> <amount> <gravity>");
+					p.sendMessage(ChatColor.RED+"NOTE: <gavity> is optional!");
+					p.sendMessage(ChatColor.RED+"EXAMPLE command: /xptrader create 20_Sponge 10_Levels 10 20 false");
 				}
-			}else 
+			}else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r") || args[0].equalsIgnoreCase("destroy"))
 			{
 
 			}
@@ -152,7 +155,7 @@ public class OmniExperienceTrader extends JavaPlugin{
 		{
 
 		}
-		return false;
+		return true;
 
 	}
 }
