@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 /***
  *		---------------------------------
  *		@Author Killerkoda13 (Alex Jones)
- *		@date Apr 11, 2016
+ *		@date Apr 16, 2016
  *		---------------------------------
  */
 public class ItemUtils {
@@ -54,7 +54,7 @@ public class ItemUtils {
 				}
 			}
 			catch (ClassNotFoundException e) {
-				throw new IOException("Unable to decode class type.", e);
+				throw new IOException("Class not found exception.", e);
 			}
 		}
 
